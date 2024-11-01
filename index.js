@@ -9,10 +9,10 @@ const cors = require('cors')
 app.use(express.static('dist'))
 
 app.use(express.json())
-app.use(cors()) 
+app.use(cors())
 
-morgan.token('body', req => {  
-  return `"name":"${req.body.name}","number":"${req.body.number}"`  
+morgan.token('body', req => {
+  return `"name":"${req.body.name}","number":"${req.body.number}"`
 })
 app.use(morgan(`:method :url :status :res[content-length] - :response-time ms :body`))
 
@@ -26,7 +26,7 @@ app.get('/', (request, response) => {
 app.get('/info', (request, response) => {
     response.send(`<p>Phonebook has info for ${persons.length} people<br>${Date()}</p>`)
     })
-    
+
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(p => {
     response.json(p)
@@ -53,15 +53,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
   .catch(error => next(error))
 })
 
-// const generateId = () => {
-//     const maxId = persons.length > 0
-//       ? Math.max(...persons.map(p => p.id))
-//       : 0
-//     return maxId + 1
-//   }
-  
 app.post('/api/persons', (request, response, next) => {
-  
+
   const body = request.body
 
   if (body.name === undefined) {
@@ -81,11 +74,11 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const { name, number} = request.body
+  const { name, number } = request.body
 
   Person.findByIdAndUpdate(
-    request.params.id, 
-    { content, important },
+    request.params.id,
+    { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedPerson => {
@@ -93,7 +86,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     })
     .catch(error => next(error))
 })
-
 
 //---------------------------------------------------
 
@@ -130,28 +122,28 @@ app.listen(PORT, () => {
 //   console.log('Body:  ', request.body)
 //   console.log('---')
 //   next()
-// }  
+// }
 // app.use(requestLogger)
 
 // let persons = [
-//     { 
+//     {
 //       "id": 1,
-//       "name": "Arto Hellas", 
+//       "name": "Arto Hellas",
 //       "number": "040-123456"
 //     },
-//     { 
+//     {
 //       "id": 2,
-//       "name": "Ada Lovelace", 
+//       "name": "Ada Lovelace",
 //       "number": "39-44-5323523"
 //     },
-//     { 
+//     {
 //       "id": 3,
-//       "name": "Dan Abramov", 
+//       "name": "Dan Abramov",
 //       "number": "12-43-234345"
 //     },
-//     { 
+//     {
 //       "id": 4,
-//       "name": "Mary Poppendieck", 
+//       "name": "Mary Poppendieck",
 //       "number": "39-23-6423122"
 //     }
-// ] 
+// ]
